@@ -25,23 +25,25 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
+	// VERSIONS
 	public static var psychEngineVersion:String = '0.6.2';
-	public static var sunsetEngineVersion:String = '0.0.3'; //This is also used for Discord RPC
+	public static var sunsetEngineVersion:String = '0.0.4'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
+	// MENU ITEMS
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
 	
 	var optionShit:Array<String> = [
-		'story_mode',
-		'freeplay',
-		#if MODS_ALLOWED 'mods', #end
-		'socials',
-		#if ACHIEVEMENTS_ALLOWED 'awards', #end
-		'credits',
-		#if !switch 'donate', #end
-		'options'
+		'story_mode', // STORY MODE
+		'freeplay', // FREEPLAY
+		#if MODS_ALLOWED 'mods', #end // MODS
+		'socials', // SOCIALS
+		#if ACHIEVEMENTS_ALLOWED 'awards', #end // AWARDS
+		'credits', // CREDITS
+		#if !switch 'donate', #end // DONATE
+		'options' // OPTIONS
 	];
 
 	var magenta:FlxSprite;
@@ -128,18 +130,8 @@ class MainMenuState extends MusicBeatState
 			if(optionShit.length < 6) scr = 0;
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
-			//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
-		//	menuItem.updateHitbox();
-		// FlxTween.tween(menuItem, {y: -130 + (i * 120)}, 1 + (i * 1.25), {
-		// 	ease: FlxEase.expoInOut,
-		// 	onComplete: function(flxTween:FlxTween)
-		// 	{
-		// 		changeItem();
-		// 	}
-		// });
-
 		
-			menuItem.updateHitbox();
+			menuItem.updateHitbox(); // Update
 			menuItem.scrollFactor.set(0, scr);
 		}
 
@@ -243,8 +235,8 @@ class MainMenuState extends MusicBeatState
 
 					// Pressed Anims
 					FlxTween.tween(FlxG.camera, {zoom: 5}, 0.8, {ease: FlxEase.expoIn});
-					FlxTween.tween(bg, {angle: 45}, 0.8, {ease: FlxEase.expoIn});
 
+ 
 					if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 					menuItems.forEach(function(spr:FlxSprite)
@@ -261,7 +253,7 @@ class MainMenuState extends MusicBeatState
 						}
 						else
 						{
-							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+							FlxFlicker.flicker(spr, 0.4, 0.06, false, false, function(flick:FlxFlicker)
 							{
 								var daChoice:String = optionShit[curSelected];
 

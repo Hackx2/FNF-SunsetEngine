@@ -24,6 +24,7 @@ class Preloader extends FlxBasePreloader
     {
         this._width = Lib.current.stage.stageWidth;
         this._height = Lib.current.stage.stageHeight;
+        //shiz kinda sus
          
         var ratio:Float = this._width / 2560; //This allows us to scale assets depending on the size of the screen.
          
