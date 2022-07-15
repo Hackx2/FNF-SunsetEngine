@@ -86,6 +86,8 @@ class TitleState extends MusicBeatState
 
 	public static var updateVersion:String = '';
 
+	var meow:Bool = true;
+
 	override public function create():Void
 	{
 		Paths.clearStoredMemory();
@@ -229,6 +231,9 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
+
+		if (!meow)
+			meow = true;
 	}
 
 	var logoBl:FlxSprite;
@@ -332,10 +337,11 @@ class TitleState extends MusicBeatState
 			default:
 			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
 			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
-			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
-				gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
-				gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!! // Stfu ShadowMario
+				gfDance.frames = Paths.getSparrowAtlas('TitleShit/GF_assets');
+				gfDance.animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				gfDance.animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+				gfDance.animation.addByPrefix('Hey', 'GF Cheer', 24, false);
 		}
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
 
@@ -504,7 +510,8 @@ class TitleState extends MusicBeatState
 				titleText.color = FlxColor.WHITE;
 				titleText.alpha = 1;
 				
-				if(titleText != null) titleText.animation.play('press');
+				if(titleText != null) 
+					titleText.animation.play('press');
 
 				FlxG.camera.flash(ClientPrefs.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
@@ -514,12 +521,17 @@ class TitleState extends MusicBeatState
 
 				transitioning = true;
 				// FlxG.sound.music.stop();
+				gfDance.animation.play('Hey');
+				meow = false;
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (mustUpdate) {
+					if (mustUpdate) 
+					{
 						MusicBeatState.switchState(new OutdatedState());
-					} else {
+					} 
+					else 
+					{
 						MusicBeatState.switchState(new MainMenuState());
 					}
 					closedState = true;
@@ -634,13 +646,16 @@ class TitleState extends MusicBeatState
 
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
-
-		if(gfDance != null) {
-			danceLeft = !danceLeft;
-			if (danceLeft)
-				gfDance.animation.play('danceRight');
-			else
-				gfDance.animation.play('danceLeft');
+		
+		if (meow)
+		{
+			if(gfDance != null) {
+				danceLeft = !danceLeft;
+				if (danceLeft)
+					gfDance.animation.play('danceRight');
+				else
+					gfDance.animation.play('danceLeft');
+			}
 		}
 
 		if(!closedState) {

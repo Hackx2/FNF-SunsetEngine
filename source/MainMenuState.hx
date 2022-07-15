@@ -1,4 +1,4 @@
-package;
+package; // Package Be Looking KINDA SUS
 
 #if desktop
 import Discord.DiscordClient;
@@ -23,6 +23,8 @@ import flixel.input.keyboard.FlxKey;
 
 using StringTools;
 
+// no.
+
 class MainMenuState extends MusicBeatState
 {
 	// VERSIONS
@@ -33,6 +35,9 @@ class MainMenuState extends MusicBeatState
 	// MENU ITEMS
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
+
+	public var camHUD:FlxCamera;
+
 	private var camAchievement:FlxCamera;
 	
 	var optionShit:Array<String> = [
@@ -51,6 +56,9 @@ class MainMenuState extends MusicBeatState
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
 	var bg:FlxSprite;
+
+	// Gold
+	var logoBl:FlxSprite;
 
 	override function create()
 	{
@@ -130,18 +138,47 @@ class MainMenuState extends MusicBeatState
 			if(optionShit.length < 6) scr = 0;
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
+			
 		
 			menuItem.updateHitbox(); // Update
 			menuItem.scrollFactor.set(0, scr);
 		}
 
+		if (!ClientPrefs.lowQuality) // shit looks ugly af
+			{
+				logoBl = new FlxSprite(-100, -100);
+	
+				logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+				logoBl.scrollFactor.set();
+				logoBl.antialiasing = ClientPrefs.globalAntialiasing;
+				logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
+				logoBl.setGraphicSize(Std.int(logoBl.width * 0.5));
+				logoBl.animation.play('bump');
+				logoBl.alpha = 0;
+				logoBl.angle = -4;
+				logoBl.updateHitbox();
+				FlxTween.tween(logoBl, {
+					y: logoBl.y + 150,
+					x: logoBl.x + 150,
+					angle: -4,
+					alpha: 1
+				}, 1.4, {ease: FlxEase.expoInOut});
+			}
+
 		FlxG.camera.follow(camFollowPos, null, 1);
 
 		// Sunset Engine
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 64, 0, "Sunset Engine v" + sunsetEngineVersion, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 64, 0, "Meow" + sunsetEngineVersion, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+
+		#if !debug
+		versionShit.text = "Sunset Engine v" + sunsetEngineVersion;
+		#end
+		#if debug
+		versionShit.text = "Sunset Engine v" + sunsetEngineVersion + ' (debug)';
+		#end
 
 		// Psych Engine
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
@@ -219,7 +256,9 @@ class MainMenuState extends MusicBeatState
 				// Main menu Anims
 				FlxTween.tween(FlxG.camera, {zoom: 5}, 0.8, {ease: FlxEase.expoIn});
 				FlxTween.tween(bg, {angle: 45}, 0.8, {ease: FlxEase.expoIn});
+				FlxTween.tween(magenta, {angle: 45}, 0.8, {ease: FlxEase.expoIn});
 				FlxTween.tween(bg, {alpha: 0}, 0.8, {ease: FlxEase.expoIn});
+				FlxTween.tween(magenta, {alpha: 0}, 0.8, {ease: FlxEase.expoIn});
 			}
 
 			if (controls.ACCEPT)
@@ -234,10 +273,11 @@ class MainMenuState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
 					// Pressed Anims
+				//	FlxTween.tween(FlxG.camera, {zoom: 5}, 0.8, {ease: FlxEase.expoIn});
 					FlxTween.tween(FlxG.camera, {zoom: 5}, 0.8, {ease: FlxEase.expoIn});
-
- 
-					if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+					FlxTween.tween(bg, {angle: 45}, 0.8, {ease: FlxEase.expoIn});
+					FlxTween.tween(magenta, {angle: 45}, 0.8, {ease: FlxEase.expoIn});
+				//	if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{
